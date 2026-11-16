@@ -15,17 +15,20 @@ from .reports.pdf_generator import pdf_generator
 async def lifespan(app: FastAPI):
     # Startup: Ensure pipeline is warm and reports generated
     print("Initializing Royal Intelligence Analytics Pipeline...")
-    _ = data_loader.data_summary
-    _ = pressure_engine.df_reconstructed
-    _ = batting_analytics.df_batting
-    _ = bowling_analytics.df_bowling
-    _ = reliability_engine.calculate_all_rankings()
-    # Pre-generate initial reports
     try:
-        pdf_generator.generate_methodology_report()
-        pdf_generator.generate_rankings_csv()
+        _ = data_loader.data_summary
+        _ = pressure_engine.df_reconstructed
+        _ = batting_analytics.df_batting
+        _ = bowling_analytics.df_bowling
+        _ = reliability_engine.calculate_all_rankings()
+        
+        # Pre-generate initial reports if missing
+        report_pdf = os.path.join(pdf_generator.reports_dir, "Royal_Intelligence_Methodology_Report.pdf")
+        if not os.path.exists(report_pdf):
+            pdf_generator.generate_methodology_report()
+            pdf_generator.generate_rankings_csv()
     except Exception as e:
-        print(f"Initial report generation notice: {e}")
+        print(f"Startup notice: {e}")
     print("Royal Intelligence Backend is ready.")
     yield
 
