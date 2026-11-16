@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+
+# Node
+node_modules/
+.npm
+frontend/node_modules/
+frontend/.vite/
+
+# System & OS
+.DS_Store
+Thumbs.db
+*.log
+
+# Duplicate raw datasets at root level (canonical datasets stored in data/raw/)
+/*.csv

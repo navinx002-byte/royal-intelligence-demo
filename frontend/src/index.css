@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #10172A;
+    color: #F2F5FA;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #17243A;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #283652;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #E83E82;
+}
+
+/* Glassmorphism panel helper */
+.glass-panel {
+  background: rgba(32, 43, 66, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.gold-glow {
+  box-shadow: 0 0 20px -5px rgba(214, 173, 98, 0.25);
+}
+
+.pink-glow {
+  box-shadow: 0 0 25px -5px rgba(232, 62, 130, 0.3);
+}
+
+/* Recharts Tooltip styling - Ensure crisp white text on dark cards */
+.recharts-default-tooltip {
+  background-color: #17243A !important;
+  border: 1px solid #283652 !important;
+  border-radius: 8px !important;
+  color: #F2F5FA !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+}
+
+.recharts-tooltip-item,
+.recharts-tooltip-item-name,
+.recharts-tooltip-item-value,
+.recharts-tooltip-item-separator,
+.recharts-tooltip-item-unit,
+.recharts-tooltip-label {
+  color: #F2F5FA !important;
+  font-size: 12px !important;
+}
+
+.recharts-tooltip-label {
+  font-weight: 700 !important;
+  margin-bottom: 4px !important;
+  color: #F2F5FA !important;
+}
