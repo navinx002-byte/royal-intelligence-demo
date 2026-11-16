@@ -1,6 +1,8 @@
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from contextlib import asynccontextmanager
 
 from .routers import dataset, analytics, rankings, players, auction, reports
@@ -64,28 +66,32 @@ def health_check():
         "environment": "Rajasthan Royals SupeRR Selector Season 2"
     }
 
-# Serve Frontend static assets if built
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
-
+# Frontend Static Assets & SPA Routing
 frontend_dist = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "frontend", "dist"))
 assets_dir = os.path.join(frontend_dist, "assets")
+
 if os.path.exists(assets_dir):
     app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
 
-if os.path.exists(frontend_dist):
-    @app.get("/{full_path:path}")
-    async def serve_frontend(full_path: str):
-        # Don't intercept API routes or documentation
-        if full_path.startswith("api/") or full_path in ["docs", "redoc", "openapi.json"]:
-            return None
-        file_path = os.path.join(frontend_dist, full_path)
-        if os.path.isfile(file_path):
-            return FileResponse(file_path)
-        index_file = os.path.join(frontend_dist, "index.html")
-        if os.path.exists(index_file):
-            return FileResponse(index_file)
-        return {"message": "Royal Intelligence API is running. Build frontend for UI."}
+@app.get("/", tags=["Frontend"])
+async def serve_root():
+    index_file = os.path.join(frontend_dist, "index.html")
+    if os.path.exists(index_file):
+        return FileResponse(index_file)
+    return {"message": "Royal Intelligence API is live. Build frontend/dist to view UI."}
+
+@app.get("/{full_path:path}", tags=["Frontend"])
+async def serve_frontend_spa(full_path: str):
+    # Do not intercept API or documentation routes
+    if full_path.startswith("api/") or full_path in ["docs", "redoc", "openapi.json"]:
+        return None
+    file_path = os.path.join(frontend_dist, full_path)
+    if os.path.isfile(file_path):
+        return FileResponse(file_path)
+    index_file = os.path.join(frontend_dist, "index.html")
+    if os.path.exists(index_file):
+        return FileResponse(index_file)
+    return {"message": "Not found"}
 
 if __name__ == "__main__":
     import uvicorn
